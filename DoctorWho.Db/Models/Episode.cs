@@ -19,7 +19,8 @@ namespace DoctorWho.Db.Models
          
         }
         public int EpisodeId { get; set; }
-        public int? SeriesNumber { get; set; }
+        [MaxLength(12)]
+        public string? SeriesNumber { get; set; }
         public int? EpisodNumber { get; set; }
         public string? EpisodType { get; set; }
         [Required]

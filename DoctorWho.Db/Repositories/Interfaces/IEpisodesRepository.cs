@@ -7,10 +7,10 @@ namespace DoctorWho.Db.Repositories.Interfaces
     {
         Task<List<Episode>> GetEpisodesAsync();
         Task<Episode> GetEpisodeAsync(int Id);
-        bool AddCompanionToEpisode(int EpisodeId, CompanionDto companionDto);
-        bool AddEnemyToEpisode(int EpisodeId, EnemyDto enemyDto);
-        bool AddExistentCompanionToEpisode(int EpisodeId, int companionId);
-        bool AddExistnetEnemyToEpisode(int EpisodeId, int enemyId);
+        void AddCompanionToEpisode(Episode episode, IEnumerable<Companion> companions);
+        void AddEnemyToEpisode(Episode episode, IEnumerable<Enemy> enemies);
+        bool AddExistentCompanionToEpisode(List<CompanionEpisode> companionEpisodes);
+        bool AddExistnetEnemyToEpisode(List<EnemyEpisode> enemyEpisodes);
         Task AddAsync(Episode episode);
         bool Remove(int Id);
         bool Update(int Id, EpisodeDto episodeDto);

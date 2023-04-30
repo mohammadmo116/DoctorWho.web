@@ -3,7 +3,7 @@ using FluentValidation;
 
 namespace DoctorWho.web.Validators
 {
-    public class DoctorDtoValidator:AbstractValidator<DoctorDto>
+    public class DoctorDtoValidator:AbstractValidator<DoctorUpsertDto>
     {
         public DoctorDtoValidator() {
             RuleFor(x => x.DoctorNumber)

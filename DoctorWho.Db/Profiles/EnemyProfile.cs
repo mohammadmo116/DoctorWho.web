@@ -14,6 +14,8 @@ namespace DoctorWho.Db.Profiles
         public EnemyProfile() {
             CreateMap<Enemy, EnemyDto>();
             CreateMap<EnemyDto, Enemy>();
+            CreateMap<Enemy, EnemyUpsertDto>();
+            CreateMap<EnemyUpsertDto, Enemy>();
         }
     }
 }

@@ -14,6 +14,8 @@ namespace DoctorWho.Db.Profiles
         public CompanionProfile() {
             CreateMap<Companion, CompanionDto>();
             CreateMap<CompanionDto, Companion>();
+            CreateMap<Companion, CompanionUpsertDto>();
+            CreateMap<CompanionUpsertDto, Companion>();
         }
     }
 }

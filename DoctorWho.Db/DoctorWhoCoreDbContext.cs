@@ -2,6 +2,7 @@
 using DoctorWho.Db.DbViews;
 using DoctorWho.Db.Models;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Options;
 using System;
 using System.Collections.Generic;
@@ -35,14 +36,7 @@ namespace DoctorWho.Db
         {
 
         }
-        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-        {
-            if (!optionsBuilder.IsConfigured)
-            {
-               
-               optionsBuilder.UseSqlServer("Server=localhost;Database=DoctorWhoCore;Trusted_Connection=True;");
-            }
-        }
+     
   
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -138,11 +132,11 @@ namespace DoctorWho.Db
 
 
                  List<Episode> EpisodesList = new() {
-                     new Episode{EpisodeId=1,Author=null,Doctor=null,AuthorId=1,DoctorId=1,EpisodDate=new DateTime(2020,1,1),EpisodNumber=1,EpisodType="a",Notes="ddd",SeriesNumber=2,Title="vv"},
-                     new Episode{EpisodeId=2,Author=null,Doctor=null,AuthorId=3,DoctorId=2,EpisodDate=new DateTime(2030,1,1),EpisodNumber=3,EpisodType="b",Notes="aaa",SeriesNumber=1,Title="vva"},
-                     new Episode{EpisodeId=3,Author=null,Doctor=null,AuthorId=2,DoctorId=5,EpisodDate=new DateTime(2000,1,1),EpisodNumber=2,EpisodType="c",Notes="fdsfds",SeriesNumber=3,Title="va"},
-                     new Episode{EpisodeId=4,Author=null,Doctor=null,AuthorId=5,DoctorId=3,EpisodDate=new DateTime(2020,1,1),EpisodNumber=5,EpisodType="d",Notes=" ",SeriesNumber=4,Title="aavv"},
-                     new Episode{EpisodeId=5,Author=null,Doctor=null,AuthorId=4,DoctorId=4,EpisodDate=new DateTime(2005,10,1),EpisodNumber=4,EpisodType="f",Notes="dsfdsf",SeriesNumber=5,Title="ddas"}
+                     new Episode{EpisodeId=1,Author=null,Doctor=null,AuthorId=1,DoctorId=1,EpisodDate=new DateTime(2020,1,1),EpisodNumber=1,EpisodType="a",Notes="ddd",SeriesNumber="2",Title="vv"},
+                     new Episode{EpisodeId=2,Author=null,Doctor=null,AuthorId=3,DoctorId=2,EpisodDate=new DateTime(2030,1,1),EpisodNumber=3,EpisodType="b",Notes="aaa",SeriesNumber="1",Title="vva"},
+                     new Episode{EpisodeId=3,Author=null,Doctor=null,AuthorId=2,DoctorId=5,EpisodDate=new DateTime(2000,1,1),EpisodNumber=2,EpisodType="c",Notes="fdsfds",SeriesNumber="3",Title="va"},
+                     new Episode{EpisodeId=4,Author=null,Doctor=null,AuthorId=5,DoctorId=3,EpisodDate=new DateTime(2020,1,1),EpisodNumber=5,EpisodType="d",Notes=" ",SeriesNumber="4",Title="aavv"},
+                     new Episode{EpisodeId=5,Author=null,Doctor=null,AuthorId=4,DoctorId=4,EpisodDate=new DateTime(2005,10,1),EpisodNumber=4,EpisodType="f",Notes="dsfdsf",SeriesNumber="5",Title="ddas"}
                  };
 
                 List<Companion> companions = new() {

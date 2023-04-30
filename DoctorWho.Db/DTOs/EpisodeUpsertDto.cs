@@ -1,5 +1,4 @@
-﻿using DoctorWho.Db.Models;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
@@ -8,10 +7,9 @@ using System.Threading.Tasks;
 
 namespace DoctorWho.Db.DTOs
 {
-    public class EpisodeDto
+    public class EpisodeUpsertDto
     {
-       
-        public int EpisodeId { get; set; }
+   
         public string? SeriesNumber { get; set; }
         public int? EpisodNumber { get; set; }
         public string? EpisodType { get; set; }
@@ -21,7 +19,5 @@ namespace DoctorWho.Db.DTOs
         public string? Notes { get; set; }
         public int DoctorId { get; set; }
         public int AuthorId { get; set; }
-
-
     }
 }

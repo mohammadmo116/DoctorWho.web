@@ -22,7 +22,12 @@ namespace DoctorWho.Db.Repositories
             _context = context;
             _mapper = mapper;
         }
+        public async Task<Author> GetAuthorAsync(int Id)
+        {
 
+            return await _context.Authors.FindAsync(Id);
+
+        }
         public async Task<bool> CreateAsync(Author author)
         {
 
@@ -44,6 +49,10 @@ namespace DoctorWho.Db.Repositories
             return await _context.SaveChangesAsync() > 0;
 
 
+        }
+        public async Task<bool> SaveChangesAsync()
+        {
+            return await _context.SaveChangesAsync() > 0;
         }
     }
 }

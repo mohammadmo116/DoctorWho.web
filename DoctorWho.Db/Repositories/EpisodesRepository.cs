@@ -1,4 +1,5 @@
-﻿using DoctorWho.Db.DTOs;
+﻿using DoctorWho.Db.DbFunctions;
+using DoctorWho.Db.DTOs;
 using DoctorWho.Db.Models;
 using DoctorWho.Db.Repositories.Interfaces;
 using Microsoft.EntityFrameworkCore;
@@ -55,55 +56,23 @@ namespace DoctorWho.Db.Repositories
             var NumerOfRowsEffected = _context.Database.ExecuteSqlInterpolated($"DELETE From Episodes where EpisodeId = {Id}");
             return NumerOfRowsEffected > 0;
         }
-        public bool AddEnemyToEpisode(int EpisodeId, EnemyDto enemyDto)
+        public void AddEnemyToEpisode(Episode episode, IEnumerable<Enemy> enemies)
+        {       
+            episode.Enemies.AddRange(enemies);   
+        }
+        public bool AddExistnetEnemyToEpisode(List<EnemyEpisode> enemyEpisodes)
         {
-            Episode episode = _context.Episodes.FirstOrDefault(x => x.EpisodeId == EpisodeId) ?? throw new Exception("404 DoctorNotFound");
-            List<Enemy> enemies = new List<Enemy> {
-                new() {
-                        EnemyName = enemyDto.EnemyName,
-                        Description = enemyDto.Description
-                      }
-            };
-
-            episode.Enemies.AddRange(enemies);
+            _context.AddRange(enemyEpisodes);
             var NumerOfRowsEffected = _context.SaveChanges();
             return NumerOfRowsEffected > 0;
         }
-        public bool AddExistnetEnemyToEpisode(int EpisodeId, int enemyId)
+        public void AddCompanionToEpisode(Episode episode, IEnumerable<Companion> companions)
         {
-            _context.AddRange(
-                new EnemyEpisode()
-                {
-                    EnemyId = enemyId,
-                    EpisodeId = EpisodeId
-                }
-                );
-            var NumerOfRowsEffected = _context.SaveChanges();
-            return NumerOfRowsEffected > 0;
-        }
-        public bool AddCompanionToEpisode(int EpisodeId, CompanionDto companionDto)
-        {
-            Episode episode = _context.Episodes.FirstOrDefault(x => x.EpisodeId == EpisodeId) ?? throw new Exception("404 DoctorNotFound");
-            List<Companion> companions = new List<Companion> {
-                new() {
-                        CompanionName = companionDto.CompanionName,
-                        WhoPlayed = companionDto.WhoPlayed
-                      }
-            };
-
             episode.Companions.AddRange(companions);
-            var NumerOfRowsEffected = _context.SaveChanges();
-            return NumerOfRowsEffected > 0;
         }
-        public bool AddExistentCompanionToEpisode(int EpisodeId, int companionId)
+        public bool AddExistentCompanionToEpisode(List<CompanionEpisode> companionEpisodes)
         {
-            _context.AddRange(
-                 new CompanionEpisode()
-                 {
-                     CompanionId = companionId,
-                     EpisodeId = EpisodeId
-                 }
-                 );
+            _context.AddRange(companionEpisodes);
             var NumerOfRowsEffected = _context.SaveChanges();
             return NumerOfRowsEffected > 0;
         }

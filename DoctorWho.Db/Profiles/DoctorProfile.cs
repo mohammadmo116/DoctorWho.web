@@ -14,6 +14,8 @@ namespace DoctorWho.Db.Profiles
         public DoctorProfile() {
             CreateMap<Doctor, DoctorDto>();
             CreateMap<DoctorDto, Doctor>();
+            CreateMap<Doctor, DoctorUpsertDto>();
+            CreateMap<DoctorUpsertDto, Doctor>();
         }
     }
 }

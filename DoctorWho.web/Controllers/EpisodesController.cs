@@ -23,7 +23,8 @@ namespace DoctorWho.web.Controllers
         private readonly IEpisodesRepository _episodes;
         public EpisodesController(DoctorWhoCoreDbContext context,
                                    IMapper mapper,
-                                   IEpisodesRepository episodes)
+                                   IEpisodesRepository episodes
+                                    )
         {
             _context = context;
             _mapper = mapper;
@@ -62,7 +63,7 @@ namespace DoctorWho.web.Controllers
         // POST: api/Episodes
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
-        public async Task<ActionResult<Episode>> PostEpisode(EpisodeDto episodeDto)
+        public async Task<ActionResult<Episode>> PostEpisode(EpisodeUpsertDto episodeDto)
         {
           if (_context.Episodes == null)
           {
@@ -74,7 +75,44 @@ namespace DoctorWho.web.Controllers
 
             return CreatedAtAction("GetEpisode", new { id = episode.EpisodeId }, episode);
         }
+        // POST: api/Episodes/5/Add-Enemy-To-Episode
+        [HttpPost("{EpisodeId}/Add-Enemy-To-Episode")]
+        public async Task<ActionResult> AddEnemyToEpisode(int EpisodeId, List<EnemyUpsertDto> enemiesDto)
+        {
+           
+            var episode = await _episodes.GetEpisodeAsync(EpisodeId);
 
-      
+            if (episode == null)
+            {
+                return NotFound("Episode is not existed");
+            }
+            var enemies = _mapper.Map<IEnumerable<Enemy>>(enemiesDto);
+            _episodes.AddEnemyToEpisode(episode, enemies);
+            await _episodes.SaveChangesAsync();
+          
+            return NoContent();
+        }
+        // POST: api/Episodes/5/Add-Companion-To-Episode
+        [HttpPost("{EpisodeId}/Add-Companion-To-Episode")]
+        public async Task<ActionResult> AddCompanionToEpisode(int EpisodeId, List<CompanionUpsertDto> companionsDto)
+        {
+            if (_context.Episodes == null)
+            {
+                return Problem("Entity set 'DoctorWhoCoreDbContext.Episodes'  is null.");
+            }
+            var episode = await _episodes.GetEpisodeAsync(EpisodeId);
+
+            if (episode == null)
+            {
+                return NotFound("Episode is not existed");
+            }
+            var companions = _mapper.Map<IEnumerable<Companion>>(companionsDto);
+            _episodes.AddCompanionToEpisode(episode, companions);
+            await _episodes.SaveChangesAsync();
+
+            return NoContent();
+        }
+
+
     }
 }

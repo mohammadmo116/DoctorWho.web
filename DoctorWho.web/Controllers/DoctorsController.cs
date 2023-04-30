@@ -26,6 +26,7 @@ namespace DoctorWho.web.Controllers
             _doctors = doctors;
         }
 
+    
         // GET: api/Doctors
         [HttpGet]
         public async Task<ActionResult<IEnumerable<DoctorDto>>> GetDoctors()
@@ -54,7 +55,7 @@ namespace DoctorWho.web.Controllers
         // PUT: api/Doctors/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutDoctor(int id, DoctorDto doctorDto)
+        public async Task<IActionResult> PutDoctor(int id, DoctorUpsertDto doctorDto)
         {
             var doctor = await _doctors.GetDoctorAsync(id);
             if (doctor == null)
@@ -72,7 +73,7 @@ namespace DoctorWho.web.Controllers
         // POST: api/Doctors
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
-        public async Task<ActionResult<Doctor>> PostDoctor(DoctorDto doctorDto)
+        public async Task<ActionResult<Doctor>> PostDoctor(DoctorUpsertDto doctorDto)
         {
           if (_context.Doctors == null)
           {
