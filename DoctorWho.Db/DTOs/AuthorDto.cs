@@ -8,11 +8,10 @@ using System.Threading.Tasks;
 
 namespace DoctorWho.Db.DTOs
 {
-    public class AuthorDto
+    public class AuthorDto:AuthorUpsertDto
     {
         public int AuthorId { get; set; }
-        [Required]
-        public string AuthorName { get; set; } = string.Empty;
+ 
 
     }
 }

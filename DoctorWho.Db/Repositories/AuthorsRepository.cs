@@ -6,6 +6,7 @@ using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Numerics;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -15,12 +16,10 @@ namespace DoctorWho.Db.Repositories
     {
 
         private DoctorWhoCoreDbContext _context;
-        private readonly IMapper _mapper;
 
         public AuthorsRepository(DoctorWhoCoreDbContext context, IMapper mapper)
         {
             _context = context;
-            _mapper = mapper;
         }
         public async Task<Author> GetAuthorAsync(int Id)
         {
@@ -35,24 +34,20 @@ namespace DoctorWho.Db.Repositories
             return await _context.SaveChangesAsync() > 0;
 
         }
-        public async Task<bool> UpdateAsync(int Id, Author author)
+        public async Task<bool> UpdateAsync(Author author)
         {
-            var temp = await _context.Authors.FindAsync(Id) ?? throw new Exception("404 DoctorNotFound");
-            _context.Entry(author).State = EntityState.Modified;
-            return await _context.SaveChangesAsync() > 0; ;
+            _context.Authors.Update(author);
+            return await _context.SaveChangesAsync() > 0;
 
         }
-        public async Task<bool> RemoveAsync(int Id)
+        public async Task<bool> RemoveAsync(Author author)
         {
-            Author author = await _context.Authors.FindAsync(Id) ?? throw new Exception("404 DoctorNotFound");
             _context.Authors.Remove(author);
             return await _context.SaveChangesAsync() > 0;
 
 
+
         }
-        public async Task<bool> SaveChangesAsync()
-        {
-            return await _context.SaveChangesAsync() > 0;
-        }
+
     }
 }

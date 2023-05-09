@@ -9,7 +9,7 @@ namespace DoctorWho.Db.DTOs
 {
     public class EpisodeUpsertDto
     {
-   
+       
         public string? SeriesNumber { get; set; }
         public int? EpisodNumber { get; set; }
         public string? EpisodType { get; set; }

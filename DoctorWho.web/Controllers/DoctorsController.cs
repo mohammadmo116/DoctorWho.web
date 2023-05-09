@@ -13,15 +13,13 @@ namespace DoctorWho.web.Controllers
     [ApiController]
     public class DoctorsController : ControllerBase
     {
-        private readonly DoctorWhoCoreDbContext _context;
         private readonly IMapper _mapper;
         private readonly IDoctorsRepository _doctors;
 
-        public DoctorsController(DoctorWhoCoreDbContext context,
+        public DoctorsController(
                                 IMapper mapper, 
                                 IDoctorsRepository doctors)
         {
-            _context = context;
             _mapper = mapper;
             _doctors = doctors;
         }
@@ -49,7 +47,7 @@ namespace DoctorWho.web.Controllers
               return NotFound();
           }
   
-            return _mapper.Map<DoctorDto>(doctor);
+            return Ok(_mapper.Map<DoctorDto>(doctor));
         }
 
         // PUT: api/Doctors/5
@@ -63,7 +61,8 @@ namespace DoctorWho.web.Controllers
                 return NotFound();
             }
             _mapper.Map(doctorDto, doctor);
-            await _doctors.SaveChangesAsync();
+            await _doctors.UpdateAsync(doctor);
+           
             
           
 
@@ -75,13 +74,10 @@ namespace DoctorWho.web.Controllers
         [HttpPost]
         public async Task<ActionResult<Doctor>> PostDoctor(DoctorUpsertDto doctorDto)
         {
-          if (_context.Doctors == null)
-          {
-              return Problem("Entity set 'DoctorWhoCoreDbContext.Doctors'  is null.");
-          }
+  
           var doctor=_mapper.Map<Doctor>(doctorDto);
          await _doctors.CreateAsyn(doctor);
-         await _doctors.SaveChangesAsync();
+     
 
 
             return CreatedAtAction("GetDoctor", new { id = doctor.DoctorId }, doctorDto);
@@ -98,7 +94,7 @@ namespace DoctorWho.web.Controllers
             }
 
             await _doctors.RemoveAsync(doctor);
-            await _doctors.SaveChangesAsync();
+          
             return NoContent();
         }
 

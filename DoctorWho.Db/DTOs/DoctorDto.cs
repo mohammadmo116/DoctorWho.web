@@ -8,19 +8,9 @@ using System.Threading.Tasks;
 
 namespace DoctorWho.Db.DTOs
 {
-    public class DoctorDto
+    public class DoctorDto : DoctorUpsertDto
     {
         public int DoctorId { get; set; }
-        [Required]
-        public int DoctorNumber { get; set; }
-        [Required]
-        public string DoctorName { get; set; } = string.Empty;
-        
-        public DateTime? BirthDate { get; set; } = null;
-
-        public DateTime? FirstEpisodDate { get; set; } = null;
-
-        public DateTime? LastEpisodDate { get; set; } = null;
 
     }
 }

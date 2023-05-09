@@ -8,12 +8,9 @@ using System.Threading.Tasks;
 
 namespace DoctorWho.Db.DTOs
 {
-    public class CompanionDto
+    public class CompanionDto:CompanionUpsertDto
     {
         public int CompanionId { get; set; }
-        [Required]
-        public string CompanionName { get; set; } = string.Empty;
-        public string? WhoPlayed { get; set; }
         
     }
 }

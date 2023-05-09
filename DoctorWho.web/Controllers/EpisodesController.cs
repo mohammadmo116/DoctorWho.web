@@ -71,7 +71,6 @@ namespace DoctorWho.web.Controllers
           }
             var episode =_mapper.Map<Episode>(episodeDto);
             await _episodes.AddAsync(episode);
-            await _episodes.SaveChangesAsync();
 
             return CreatedAtAction("GetEpisode", new { id = episode.EpisodeId }, episode);
         }
@@ -87,8 +86,7 @@ namespace DoctorWho.web.Controllers
                 return NotFound("Episode is not existed");
             }
             var enemies = _mapper.Map<IEnumerable<Enemy>>(enemiesDto);
-            _episodes.AddEnemyToEpisode(episode, enemies);
-            await _episodes.SaveChangesAsync();
+            await _episodes.AddEnemyToEpisodeAsync(episode, enemies);
           
             return NoContent();
         }
@@ -107,8 +105,8 @@ namespace DoctorWho.web.Controllers
                 return NotFound("Episode is not existed");
             }
             var companions = _mapper.Map<IEnumerable<Companion>>(companionsDto);
-            _episodes.AddCompanionToEpisode(episode, companions);
-            await _episodes.SaveChangesAsync();
+            await _episodes.AddCompanionToEpisodeAsync(episode, companions);
+     
 
             return NoContent();
         }

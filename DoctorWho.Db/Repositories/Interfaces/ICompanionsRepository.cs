@@ -5,9 +5,9 @@ namespace DoctorWho.Db.Repositories.Interfaces
 {
     public interface ICompanionsRepository
     {
-        bool Create(CompanionDto companionDto);
-        Companion Get(int Id);
-        bool Remove(int Id);
-        bool Update(int Id, CompanionDto companionDto);
+        Task<bool> CreateAsync(Companion companion);
+        Task<Companion> GetAsync(int Id);
+        Task<bool> RemoveAsync(int Id);
+        Task<bool> UpdateAsync(int Id, Companion companion);
     }
 }

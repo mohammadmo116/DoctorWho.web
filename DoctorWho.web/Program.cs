@@ -9,11 +9,8 @@ using Microsoft.Extensions.DependencyInjection.Extensions;
 using System.Configuration;
 using System.Text.Json.Serialization;
 using Microsoft.Extensions.DependencyInjection;
-using DoctorWho.web.Data;
 
 var builder = WebApplication.CreateBuilder(args);
-builder.Services.AddDbContext<DoctorWhowebContext>(options =>
-    options.UseSqlServer(builder.Configuration.GetConnectionString("DoctorWhowebContext") ?? throw new InvalidOperationException("Connection string 'DoctorWhowebContext' not found.")));
 
 // Add services to the container.
 
@@ -29,7 +26,8 @@ builder.Services.AddSwaggerGen();
 
 builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 
-builder.Services.AddDbContext<DoctorWhoCoreDbContext>(options => options.UseSqlServer(builder.Configuration.GetConnectionString("sqlServer")));
+builder.Services.AddDbContext<DoctorWhoCoreDbContext>(options => 
+    options.UseSqlServer(builder.Configuration.GetConnectionString("sqlServer") ?? throw new InvalidOperationException("Connection string 'sqlServer' not found.") ));
 
 builder.Services.AddScoped<IEnemiesRepository, EnemiesRepository>();
 builder.Services.AddScoped<IAuthorsRepository, AuthorsRepository>();

@@ -5,15 +5,14 @@ namespace DoctorWho.Db.Repositories.Interfaces
 {
     public interface IEpisodesRepository
     {
-        Task<List<Episode>> GetEpisodesAsync();
+        Task<bool> AddAsync(Episode episode);
+        Task<bool> AddCompanionToEpisodeAsync(Episode episode, IEnumerable<Companion> companions);
+        Task<bool> AddEnemyToEpisodeAsync(Episode episode, IEnumerable<Enemy> enemies);
+        Task<bool> AddExistentCompanionToEpisodeAsync(List<CompanionEpisode> companionEpisodes);
+        Task<bool> AddExistnetEnemyToEpisodeAsync(List<EnemyEpisode> enemyEpisodes);
         Task<Episode> GetEpisodeAsync(int Id);
-        void AddCompanionToEpisode(Episode episode, IEnumerable<Companion> companions);
-        void AddEnemyToEpisode(Episode episode, IEnumerable<Enemy> enemies);
-        bool AddExistentCompanionToEpisode(List<CompanionEpisode> companionEpisodes);
-        bool AddExistnetEnemyToEpisode(List<EnemyEpisode> enemyEpisodes);
-        Task AddAsync(Episode episode);
-        bool Remove(int Id);
-        bool Update(int Id, EpisodeDto episodeDto);
-        Task<bool> SaveChangesAsync();
+        Task<List<Episode>> GetEpisodesAsync();
+        Task<bool> RemoveAsync(int Id);
+        Task<bool> UpdateAsync(int Id, Episode episode);
     }
 }

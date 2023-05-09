@@ -5,9 +5,9 @@ namespace DoctorWho.Db.Repositories.Interfaces
 {
     public interface IEnemiesRepository
     {
-        bool Create(EnemyDto enemyDto);
-        EnemyDto Get(int Id);
-        bool Remove(int Id);
-        bool Update(int Id, EnemyDto enemyDto);
+        Task<bool> CreateAsync(Enemy enemy);
+        Task<Enemy> GetAsync(int Id);
+        Task<bool> RemoveAsync(int Id);
+        Task<bool> UpdateAsync(int Id, Enemy enemy);
     }
 }

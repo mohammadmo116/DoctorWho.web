@@ -6,7 +6,6 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using DoctorWho.Db.Models;
-using DoctorWho.web.Data;
 using DoctorWho.Db.DTOs;
 using DoctorWho.Db.Repositories.Interfaces;
 using AutoMapper;
@@ -17,15 +16,13 @@ namespace DoctorWho.web.Controllers
     [ApiController]
     public class AuthorsController : ControllerBase
     {
-        private readonly DoctorWhowebContext _context;
         private readonly IMapper _mapper;
         private readonly IAuthorsRepository _authors;
 
-        public AuthorsController(DoctorWhowebContext context,
+        public AuthorsController(
                                  IMapper mapper,
                                  IAuthorsRepository authors)
         {
-            _context = context;
             _mapper = mapper;
             _authors = authors;
         }
@@ -35,13 +32,14 @@ namespace DoctorWho.web.Controllers
         [HttpGet("{id}")]
         public async Task<ActionResult<AuthorDto>> GetAuthor(int id)
         {
+
             var author = await _authors.GetAuthorAsync(id);
             if (author == null)
             {
                 return NotFound();
             }
 
-            return _mapper.Map<AuthorDto>(author);
+            return Ok(_mapper.Map<AuthorDto>(author));
         }
 
         // PUT: api/Authors/5
@@ -55,7 +53,7 @@ namespace DoctorWho.web.Controllers
                 return NotFound();
             }
             _mapper.Map(authorDto, author);
-            await _authors.SaveChangesAsync();
+            await _authors.UpdateAsync(author);
 
 
             return NoContent();

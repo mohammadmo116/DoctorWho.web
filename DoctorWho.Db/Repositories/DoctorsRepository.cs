@@ -16,16 +16,16 @@ namespace DoctorWho.Db.Repositories
     {
 
         private DoctorWhoCoreDbContext _context;
-        private readonly IMapper _mapper;
 
         public DoctorsRepository(DoctorWhoCoreDbContext Context)
         {
             _context = Context;
         }
-        public async Task CreateAsyn(Doctor doctor)
+        public async Task<bool> CreateAsyn(Doctor doctor)
         {
 
             await _context.Doctors.AddAsync(doctor);
+            return await _context.SaveChangesAsync() > 0;
 
         }
         public async Task<Doctor> GetDoctorAsync(int Id)
@@ -42,18 +42,17 @@ namespace DoctorWho.Db.Repositories
          
         }
       
-        public async Task UpdateAsync(Doctor doctor)
+        public async Task<bool> UpdateAsync(Doctor doctor)
         {
             _context.Doctors.Update(doctor);
-        }
-        public async Task RemoveAsync(Doctor doctor)
-        {
-            _context.Doctors.Remove(doctor); 
-        }
-        public async Task<bool> SaveChangesAsync()
-        {   
             return await _context.SaveChangesAsync() > 0;
         }
+        public async Task<bool> RemoveAsync(Doctor doctor)
+        {
+            _context.Doctors.Remove(doctor);
+            return await _context.SaveChangesAsync() > 0;
+        }
+       
 
     }
 }

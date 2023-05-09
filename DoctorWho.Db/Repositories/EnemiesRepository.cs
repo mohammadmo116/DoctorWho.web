@@ -7,6 +7,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net.Mail;
+using System.Reflection.Metadata.Ecma335;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -14,47 +15,35 @@ namespace DoctorWho.Db.Repositories
 {
     public class EnemiesRepository : IEnemiesRepository
     {
-        private DoctorWhoCoreDbContext _Context;
-        private readonly IMapper _mapper;
+        private DoctorWhoCoreDbContext _context;
 
-        public EnemiesRepository(DoctorWhoCoreDbContext Context, IMapper mapper)
+        public EnemiesRepository(DoctorWhoCoreDbContext context, IMapper mapper)
         {
-            _Context = Context;
-            _mapper = mapper;
+            _context = context;
         }
-        public EnemyDto Get(int Id)
+        public async Task<Enemy> GetAsync(int Id)
         {
 
-             Enemy enemy=_Context.Enemies.FirstOrDefault(x => x.EnemyId == Id) ?? throw new Exception("404 DoctorNotFound");
-           var enemyDto= _mapper.Map<EnemyDto>(enemy);
-             return enemyDto;
+            return await _context.Enemies.FindAsync(Id);
         }
 
-        public bool Create(EnemyDto enemyDto)
+        public async Task<bool> CreateAsync(Enemy enemy)
         {
-            Enemy enemy = new()
-            {
-                EnemyName = enemyDto.EnemyName,
-                Description = enemyDto.Description,
-            };
-            _Context.Enemies.Add(enemy);
-            var NumerOfRowsEffected = _Context.SaveChanges();
-            return NumerOfRowsEffected > 0;
+            await _context.Enemies.AddAsync(enemy);
+            return await _context.SaveChangesAsync() > 0;
+
         }
-        public bool Update(int Id, EnemyDto enemyDto)
+        public async Task<bool> UpdateAsync(int Id, Enemy enemy)
         {
-            Enemy enemy = _Context.Enemies.FirstOrDefault(x => x.EnemyId == Id) ?? throw new Exception("404 EnemyNotFound");
-            enemy.EnemyName = enemyDto.EnemyName;
-            enemy.Description = enemyDto.Description;
-            _Context.Enemies.Update(enemy);
-            var NumerOfRowsEffected = _Context.SaveChanges();
-            return NumerOfRowsEffected > 0;
+            _context.Enemies.Update(enemy);
+            return await _context.SaveChangesAsync() > 0;
+
         }
-        public bool Remove(int Id)
+        public async Task<bool> RemoveAsync(int Id)
         {
 
-            var NumerOfRowsEffected = _Context.Database.ExecuteSqlInterpolated($"DELETE From Enemies where EnemyId = {Id}");
-            return NumerOfRowsEffected > 0;
+            return await _context.Database.ExecuteSqlInterpolatedAsync($"DELETE From Enemies where EnemyId = {Id}") > 0;
+
         }
     }
 }

@@ -13,40 +13,33 @@ namespace DoctorWho.Db.Repositories
 {
     public class CompanionsRepository : ICompanionsRepository
     {
-        private DoctorWhoCoreDbContext _Context;
-        public CompanionsRepository(DoctorWhoCoreDbContext Context)
+        private DoctorWhoCoreDbContext _context;
+        public CompanionsRepository(DoctorWhoCoreDbContext context)
         {
-            _Context = Context;
+            _context = context;
         }
 
-        public Companion Get(int Id)
+        public async Task<Companion> GetAsync(int Id)
         {
-            return _Context.Companions.FirstOrDefault(x => x.CompanionId == Id) ?? throw new Exception("404 DoctorNotFound");
+            return await _context.Companions.FindAsync(Id);
         }
-        public bool Create(CompanionDto companionDto)
+        public async Task<bool> CreateAsync(Companion companion)
         {
-            Companion companion = new()
-            {
-                CompanionName = companionDto.CompanionName,
-                WhoPlayed = companionDto.WhoPlayed
-            };
-            _Context.Companions.Add(companion);
-            var NumerOfRowsEffected = _Context.SaveChanges();
-            return NumerOfRowsEffected > 0;
+
+            _context.Companions.AddAsync(companion);
+            return await _context.SaveChangesAsync() > 0;
+
         }
-        public bool Update(int Id, CompanionDto companionDto)
+        public async Task<bool> UpdateAsync(int Id, Companion companion)
         {
-            Companion companion = _Context.Companions.FirstOrDefault(x => x.CompanionId == Id) ?? throw new Exception("404 DoctorNotFound");
-            companion.CompanionName = companionDto.CompanionName;
-            companion.WhoPlayed = companionDto.WhoPlayed;
-            _Context.Companions.Update(companion);
-            var NumerOfRowsEffected = _Context.SaveChanges();
-            return NumerOfRowsEffected > 0;
+
+            _context.Companions.Update(companion);
+            return await _context.SaveChangesAsync() > 0;
         }
-        public bool Remove(int Id)
+        public async Task<bool> RemoveAsync(int Id)
         {
-            var NumerOfRowsEffected = _Context.Database.ExecuteSqlInterpolated($"DELETE From Companions where CompanionId = {Id}");
-            return NumerOfRowsEffected > 0;
+            return await _context.Database.ExecuteSqlInterpolatedAsync($"DELETE From Companions where CompanionId = {Id}") > 0;
+
         }
     }
 }
